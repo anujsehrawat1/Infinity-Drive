@@ -7,12 +7,12 @@ window.global = window;
 // Fix for GramJS multiple buffer instances issue
 const originalIsBuffer = Buffer.isBuffer;
 Buffer.isBuffer = function(obj) {
-  if (originalIsBuffer(obj)) return true;
-  return obj != null && (
-    obj._isBuffer === true || 
-    (obj.constructor != null && obj.constructor.name === 'Buffer') ||
-    typeof obj.readInt8 === 'function'
-  );
+  if (obj == null) return false;
+  if (originalIsBuffer && originalIsBuffer(obj)) return true;
+  if (obj._isBuffer === true) return true;
+  if (obj instanceof Uint8Array) return true;
+  if (obj.buffer instanceof ArrayBuffer && obj.byteLength !== undefined) return true;
+  return false;
 };
 
 import './index.css'
