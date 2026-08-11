@@ -8,7 +8,11 @@ window.global = window;
 const originalIsBuffer = Buffer.isBuffer;
 Buffer.isBuffer = function(obj) {
   if (originalIsBuffer(obj)) return true;
-  return obj != null && obj.constructor != null && obj.constructor.name === 'Buffer';
+  return obj != null && (
+    obj._isBuffer === true || 
+    (obj.constructor != null && obj.constructor.name === 'Buffer') ||
+    typeof obj.readInt8 === 'function'
+  );
 };
 
 import './index.css'
