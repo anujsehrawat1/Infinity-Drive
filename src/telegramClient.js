@@ -51,8 +51,11 @@ export const signIn = async (phoneNumber, phoneCodeHash, code) => {
 
 export const checkPassword = async (password) => {
   if (!client) throw new Error("Client not initialized");
+  
+  const passwordParams = await client.invoke(new Api.account.GetPassword());
+  
   await client.signInWithPassword(
-    { apiId, apiHash },
+    passwordParams,
     {
       password: async () => password,
       onError: (err) => {
